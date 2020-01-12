@@ -1,15 +1,15 @@
 clear all; units;
 cd('C:\Users\Daniel Abutbul\OneDrive - Technion\2D Coulomb Naive');
 addpath ../'3D Metropolis Monte Carlo'/;
-T = [1e2*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
+T = [1e4*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
 I = ones(1, length(T));
 eta_arr = 0.9*I;  % eta = N*sig^2/A
 n_row_arr = 10*I;
 n_col_arr = 10*I;
 
-N_real  = 1e5;  % 1e4*N/9*5;  % TBD!
-N_save = 5e2;  % 1e4;  % TBD!
-N_start = 2e3;  % 1e4;  % TBD!
+N_real  = 5e4;  % 1e4*N/9*5;  % TBD!
+N_save = 1e2;  % 1e4;  % TBD!
+N_start = 2e2;  % 1e4;  % TBD!
 f = 1;  % factor step size
 
 code_dir = pwd;
@@ -25,7 +25,7 @@ for j = 1:length(n_col_arr)
     state.rad = r_ion;  % hard sphere rejection still exist
     A = N*(2*state.rad)^2/eta_arr(j);
     
-    state.H = 4;  % z>H/2 -> charge = +1, z< H/2-> chage = -1
+    state.H = 4*state.rad;  % z>H/2 -> charge = +1, z< H/2-> chage = -1
     state.beta = beta;
     state.cyclic_boundary = sqrt(A)*[1 1];
     state.spheres = antiferro_rect_starting_cond3D([n_col n_row 1],...
