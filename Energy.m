@@ -1,5 +1,4 @@
 function [E] = Energy(state,i)
-units;
 [N,~] = size(state.spheres);
 E = 0;
 p1 = state.spheres(i,1:2);
@@ -14,7 +13,7 @@ for j=[1:i-1 i+1:N]
             E = inf;
             return
         else
-            E = E + e^2*q1*q2/dr;
+            E = E + q1*q2/dr;
         end
     end
 end

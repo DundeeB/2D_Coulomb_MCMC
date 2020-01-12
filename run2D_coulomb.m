@@ -1,13 +1,15 @@
 clear all; units;
 cd('C:\Users\Daniel Abutbul\OneDrive - Technion\2D Coulomb Naive');
 addpath ../'3D Metropolis Monte Carlo'/;
-T = [1e4*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
+T = [1e2*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
 I = ones(1, length(T));
 eta_arr = 0.9*I;  % eta = N*sig^2/A
 n_row_arr = 10*I;
 n_col_arr = 10*I;
 
-N_real = 1e2;
+N_real  = 1e5;  % 1e4*N/9*5;  % TBD!
+N_save = 5e2;  % 1e4;  % TBD!
+N_start = 2e3;  % 1e4;  % TBD!
 f = 1;  % factor step size
 
 code_dir = pwd;
@@ -19,7 +21,7 @@ for j = 1:length(n_col_arr)
     n_col = n_col_arr(j);
     
     N = n_row * n_col;
-    beta = 1/(k_B*T(j));
+    beta = e^2/(k_B*T(j));  % exp(-H/kT)=exp(-e^2/r^2*1/kT) = exp(-beta/r^2) for beta=e^2/kT
     state.rad = r_ion;  % hard sphere rejection still exist
     A = N*(2*state.rad)^2/eta_arr(j);
     
@@ -34,12 +36,9 @@ for j = 1:length(n_col_arr)
     addpath('.');
     cd(simulations_dir); mkdir(sim_name); cd(sim_name);
     %%
-%     N_real  = 100;  % 1e4*N/9*5;  % TBD!
     a = sqrt(A/N)-2*state.rad;
     assert(a>0, "Too many spheres!");
     step_size = f*a;
-    N_save = 1;  % 1e4;  % TBD!
-    N_start = 1;  % 1e4;  % TBD!
     %%
     save('Input_parameters');
     %%
@@ -71,8 +70,8 @@ for j = 1:length(n_col_arr)
     %%
     cd(code_dir);
     toc;
-    %
+    
     tic;
-    post_process([simulations_dir sim_name],false, 'output_psi14_psi23_b1_N_sp');  % _100',100);  % TBD
+    post_process([simulations_dir sim_name],true, 'output_psi14');
     toc;
 end
