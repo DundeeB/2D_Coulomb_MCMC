@@ -1,14 +1,14 @@
 clear all; units;
 cd('C:\Users\Daniel Abutbul\OneDrive - Technion\2D Coulomb Naive');
 addpath ../'3D Metropolis Monte Carlo'/;
-T = [3e3*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
-I = ones(1, length(beta_tilde_arr));
-eta_arr = 0.25*I;  % eta = N*sig^2/A
+T = [1e4*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
+I = ones(1, length(T));
+eta_arr = 0.9*I;  % eta = N*sig^2/A
 n_row_arr = 10*I;
 n_col_arr = 10*I;
 
 N_real = 1e2;
-f = 0.5;  % factor step size
+f = 1;  % factor step size
 
 code_dir = pwd;
 simulations_dir = 'C:\Users\Daniel Abutbul\OneDrive - Technion\simulation-results-Coulomb\';
@@ -35,7 +35,8 @@ for j = 1:length(n_col_arr)
     cd(simulations_dir); mkdir(sim_name); cd(sim_name);
     %%
 %     N_real  = 100;  % 1e4*N/9*5;  % TBD!
-    a = sqrt(A/N);
+    a = sqrt(A/N)-2*state.rad;
+    assert(a>0, "Too many spheres!");
     step_size = f*a;
     N_save = 1;  % 1e4;  % TBD!
     N_start = 1;  % 1e4;  % TBD!
@@ -70,8 +71,8 @@ for j = 1:length(n_col_arr)
     %%
     cd(code_dir);
     toc;
-    %%
-%     tic;
-%     post_process([simulations_dir sim_name],false, 'output_psi14_psi23_b1_N_sp');  % _100',100);  % TBD
-%     toc;
+    %
+    tic;
+    post_process([simulations_dir sim_name],false, 'output_psi14_psi23_b1_N_sp');  % _100',100);  % TBD
+    toc;
 end
