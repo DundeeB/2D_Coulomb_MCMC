@@ -1,19 +1,18 @@
 clear all; units;
-cd('C:\Users\Daniel Abutbul\OneDrive - Technion\2D Coulomb Naive');
 addpath ../'3D Metropolis Monte Carlo'/;
 T = [1e4*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
 I = ones(1, length(T));
 eta_arr = 0.9*I;  % eta = N*sig^2/A
-n_row_arr = 10*I;
-n_col_arr = 10*I;
+n_row_arr = 15*I;
+n_col_arr = 15*I;
 
-N_real  = 5e4;  % 1e4*N/9*5;  % TBD!
-N_save = 1e2;  % 1e4;  % TBD!
-N_start = 2e2;  % 1e4;  % TBD!
+N_real_factor = 1e4;
+N_save_factor = 1e2;
+N_start_factor = 1e2;
 f = 1;  % factor step size
 
 code_dir = pwd;
-simulations_dir = 'C:\Users\Daniel Abutbul\OneDrive - Technion\simulation-results-Coulomb\';
+simulations_dir = '..\simulation-results-Coulomb\';
 
 for j = 1:length(n_col_arr)
     tic;
@@ -21,6 +20,10 @@ for j = 1:length(n_col_arr)
     n_col = n_col_arr(j);
     
     N = n_row * n_col;
+    N_real = N_real_factor*N;
+    N_save = N_save_factor*N;
+    N_start = N_start_factor*N;
+    
     beta = e^2/(k_B*T(j));  % exp(-H/kT)=exp(-e^2/r^2*1/kT) = exp(-beta/r^2) for beta=e^2/kT
     state.rad = r_ion;  % hard sphere rejection still exist
     A = N*(2*state.rad)^2/eta_arr(j);
