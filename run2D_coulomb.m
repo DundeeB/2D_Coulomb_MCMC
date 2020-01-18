@@ -1,8 +1,8 @@
 clear all; units;
 addpath ../'3D Metropolis Monte Carlo'/;
-T = [1e4*Kelvin];  % beta = beta*K*q^2, where exp(-beta*H)=exp(-beta*Energy) and energy is 1/r
+T = [1e2 5e2 1e3 5e3 1e4];
 I = ones(1, length(T));
-eta_arr = 0.9*I;  % eta = N*sig^2/A
+eta_arr = 0.7*I;  % eta = N*sig^2/A
 n_row_arr = 15*I;
 n_col_arr = 15*I;
 
